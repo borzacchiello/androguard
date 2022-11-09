@@ -188,39 +188,6 @@ def create_directory(pathdir):
         os.makedirs(pathdir)
 
 
-def androgui_main(input_file, input_plugin):
-    # Load pyqt5 after argument processing, so we can collect the arguments
-    # on a system without PyQT5.
-    try:
-        from PyQt5 import QtWidgets, QtGui
-    except ImportError:
-        print("No PyQT5 found! Exiting...", file=sys.stderr)
-        sys.exit(1)
-    try:
-        import pyperclip
-    except ImportError:
-        print("No pyperclip found! Exiting...", file=sys.stderr)
-        sys.exit(1)
-
-    from androguard.gui.mainwindow import MainWindow
-
-    # We need that to save huge sessions when leaving and avoid
-    # RuntimeError: maximum recursion depth exceeded while pickling an object
-    # or
-    # RuntimeError: maximum recursion depth exceeded in cmp
-    # http://stackoverflow.com/questions/2134706/hitting-maximum-recursion-depth-using-pythons-pickle-cpickle
-    sys.setrecursionlimit(50000)
-
-    app = QtWidgets.QApplication(sys.argv)
-
-    window = MainWindow(input_file=input_file,
-                        input_plugin=input_plugin)
-    window.resize(1024, 768)
-    window.show()
-
-    sys.exit(app.exec_())
-
-
 def androlyze_main(session, filename):
     """
     Start an interactive shell
